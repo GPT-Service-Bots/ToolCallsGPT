@@ -16,6 +16,7 @@ configure_logger()
 class FunctionCallRequest(BaseModel):
     function_name: str
     args: Dict[str, Any]
+    request_id: str
 
 
 # Эндпоинт для выполнения функции
@@ -33,6 +34,7 @@ async def execute_tool(request: FunctionCallRequest):
         log_critical(
             action="Вызов функции",
             message='Ошибка при вызове функции TypeError',
+            request_id=request.request_id,
             exc_info=True,
             error=str(e),
         )
@@ -41,6 +43,7 @@ async def execute_tool(request: FunctionCallRequest):
         log_critical(
             action="Вызов функции",
             message='Ошибка при вызове функции Exception',
+            request_id=request.request_id,
             exc_info=True,
             error=str(e),
         )
