@@ -1,12 +1,15 @@
 from typing import Dict, Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 
 from functions.registry import FUNCTION_REGISTRY
-from logger.templates import log_critical
+from logger.config import configure_logger
+from logger.templates import log_critical, log_info
 
 app = FastAPI()
+
+configure_logger()
 
 
 # Pydantic-модель запроса
@@ -42,3 +45,8 @@ async def execute_tool(request: FunctionCallRequest):
             error=str(e),
         )
         return {"result": "Внутренняя ошибка при вызове функции"}
+
+
+@app.on_event("startup")
+async def on_startup():
+    log_info("startup", "FastAPI приложение инициализировано")
