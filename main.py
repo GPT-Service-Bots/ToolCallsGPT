@@ -22,6 +22,13 @@ class FunctionCallRequest(BaseModel):
 # Эндпоинт для выполнения функции
 @app.post("/execute_tool")
 async def execute_tool(request: FunctionCallRequest):
+    log_info(
+        action='Запрос выполнения функции',
+        message='Пришёл запрос',
+        function_name=request.function_name,
+        args=request.args,
+        request_id=request.request_id
+    )
     func = FUNCTION_REGISTRY.get(request.function_name)
 
     if not func:
