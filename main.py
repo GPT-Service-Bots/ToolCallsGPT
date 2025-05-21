@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from functions.registry import FUNCTION_REGISTRY
 from logger.config import configure_logger
 from logger.templates import log_critical, log_info
+import functions
 
 app = FastAPI()
 
