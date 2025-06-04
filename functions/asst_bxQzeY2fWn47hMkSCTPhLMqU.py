@@ -32,8 +32,18 @@ async def send_user_info_bxQzLMqU(phone_number: str, additional_info: str, clien
             for manager_id in manager_ids
         ]
         responses = await asyncio.gather(*tasks, return_exceptions=True)
-        return responses
 
+        return [
+            {
+                "status_code": r.status_code,
+                "text": r.text
+            }
+            if isinstance(r, httpx.Response) else
+            {
+                "error": str(r)
+            }
+            for r in responses
+        ]
 
 async def send_unanswered_question_bxQzLMqU(question: str):
     safe_question = html.escape(question)
@@ -53,8 +63,18 @@ async def send_unanswered_question_bxQzLMqU(question: str):
             for manager_id in manager_ids
         ]
         responses = await asyncio.gather(*tasks, return_exceptions=True)
-        return responses
 
+        return [
+            {
+                "status_code": r.status_code,
+                "text": r.text
+            }
+            if isinstance(r, httpx.Response) else
+            {
+                "error": str(r)
+            }
+            for r in responses
+        ]
 
 if __name__ == "__main__":
     pass
